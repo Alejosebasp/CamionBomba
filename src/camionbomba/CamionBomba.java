@@ -5,6 +5,7 @@
  */
 package camionbomba;
 
+import camionbomba.CamionBomba.Bombas.Node;
 import java.util.*;
 import java.io.*;
 
@@ -33,7 +34,7 @@ public class CamionBomba {
             return Size() == 0;
         }
         
-        public void add(int cant_gas, int dist_bomba){
+        public void add(long cant_gas, long dist_bomba){
             
             if (vacia()) {
                 head = new Node(cant_gas, dist_bomba, null, null);
@@ -54,7 +55,7 @@ public class CamionBomba {
         
         public Node obtener(){
             Node aux = head;
-            int acumulado = 0;
+            long acumulado = 0;
             
             //boolean condicion = true;
             
@@ -63,14 +64,14 @@ public class CamionBomba {
                 
                 if (acumulado >= 0) {
                     aux = aux.next;
-                    if (aux == tail) {
+                    if (aux == head) {
                         return aux;
                     }
                 }
                 else{
-                    head = head.next;
                     tail = tail.next;
-                    aux = aux.next;
+                    head = head.next;
+                    aux = head;
                     acumulado = 0;
                 }
             }
@@ -84,14 +85,14 @@ public class CamionBomba {
             }
         }
         
-        private class Node{
+        public class Node{
             
-            private int cant_gas;
-            private int dist_bomba;
+            private long cant_gas;
+            private long dist_bomba;
             private Node next;
             private Node prev;
 
-            public Node(int cant_gas, int dist_bomba, Node next, Node prev) {
+            public Node(long cant_gas, long dist_bomba, Node next, Node prev) {
                 this.cant_gas = cant_gas;
                 this.dist_bomba = dist_bomba;
                 this.next = next;
@@ -112,14 +113,21 @@ public class CamionBomba {
         for (int i = 0; i < num_bombas; i++) {
             line = br.readLine();
             String[] datos = line.split(" ");
-            int cant_gas = Integer.parseInt(datos[0]);
-            int dist_bomba = Integer.parseInt(datos[1]);
+            long cant_gas = Integer.parseInt(datos[0]);
+            long dist_bomba = Integer.parseInt(datos[1]);
             
             bombas.add(cant_gas, dist_bomba);
-            
         }
         
-        System.out.println(bombas.obtener().cant_gas);
+        Node resultado = bombas.obtener();
+        Node aux = resultado.prev;
+        
+        int contador = 0;
+        while (aux != resultado) {            
+            contador++;
+            aux = aux.prev;
+        }
+        System.out.println(contador);
     }
     
 }
