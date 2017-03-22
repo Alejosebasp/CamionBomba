@@ -5,7 +5,7 @@
  */
 package camionbomba;
 
-import camionbomba.CamionBomba.Bombas.Node;
+//import camionbomba.CamionBomba.Bombas.Node;
 import java.util.*;
 import java.io.*;
 
@@ -34,10 +34,10 @@ public class CamionBomba {
             return Size() == 0;
         }
         
-        public void add(long cant_gas, long dist_bomba){
+        public void add(long cant_gas, long dist_bomba, int posicion){
             
             if (vacia()) {
-                head = new Node(cant_gas, dist_bomba, null, null);
+                head = new Node(cant_gas, dist_bomba, null, null, posicion);
                 tail = head;
                 head.prev = tail;
                 tail.next = head;
@@ -45,7 +45,7 @@ public class CamionBomba {
             }
             else{
                 Node aux = tail;
-                tail = new Node(cant_gas, dist_bomba, null, aux);
+                tail = new Node(cant_gas, dist_bomba, null, aux, posicion);
                 aux.next = tail;
                 head.prev = tail;
                 tail.next = head;
@@ -84,21 +84,23 @@ public class CamionBomba {
                 aux = aux.next;
             }
         }
-        
-        public class Node{
+    }
+    
+    public static class Node{
             
             private long cant_gas;
             private long dist_bomba;
             private Node next;
             private Node prev;
+            int posicion;
 
-            public Node(long cant_gas, long dist_bomba, Node next, Node prev) {
+            public Node(long cant_gas, long dist_bomba, Node next, Node prev, int posicion) {
                 this.cant_gas = cant_gas;
                 this.dist_bomba = dist_bomba;
                 this.next = next;
                 this.prev = prev;
+                this.posicion = posicion;
             }
-        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -116,18 +118,11 @@ public class CamionBomba {
             long cant_gas = Integer.parseInt(datos[0]);
             long dist_bomba = Integer.parseInt(datos[1]);
             
-            bombas.add(cant_gas, dist_bomba);
+            bombas.add(cant_gas, dist_bomba, i);
         }
         
         Node resultado = bombas.obtener();
-        Node aux = resultado.prev;
-        
-        int contador = 0;
-        while (aux != resultado) {            
-            contador++;
-            aux = aux.prev;
-        }
-        System.out.println(contador);
+        System.out.println(resultado.posicion);
     }
     
 }
